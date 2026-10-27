@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Location {
+  slug        String            @id
+  displayName String
+  pokemon     PokemonLocation[]
+}
+
+model Media {
+  pokemonId Int
+  kind      String
+  mimeType  String
+  width     Int?
+  height    Int?
+  bytes     Bytes
+  sourceUrl String
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([pokemonId, kind])
+}
+
+model Pokemon {
+  id             Int               @id @default(autoincrement())
+  name           String            @unique(map: "sqlite_autoindex_Pokemon_1")
+  displayName    String
+  genus          String
+  heightDm       Int
+  weightHg       Int
+  color          String
+  flavorText     String?
+  spriteUrl      String?
+  spriteFrlgUrl  String?
+  artworkUrl     String?
+  cryUrl         String?
+  cryLegacyUrl   String?
+  hp             Int
+  attack         Int
+  defense        Int
+  specialAttack  Int
+  specialDefense Int
+  speed          Int
+  evolvesFromId  Int?
+  media          Media[]
+  evolvesFrom    Pokemon?          @relation("PokemonToPokemon", fields: [evolvesFromId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  evolvesTo      Pokemon[]         @relation("PokemonToPokemon")
+  locations      PokemonLocation[]
+  types          PokemonType[]
+}
+
+model PokemonLocation {
+  pokemonId    Int
+  locationSlug String
+  location     Location @relation(fields: [locationSlug], references: [slug], onDelete: NoAction, onUpdate: NoAction)
+  pokemon      Pokemon  @relation(fields: [pokemonId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([pokemonId, locationSlug])
+}
+
+model PokemonType {
+  pokemonId Int
+  typeName  String
+  slot      Int
+  type      Type    @relation(fields: [typeName], references: [name], onDelete: NoAction, onUpdate: NoAction)
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([pokemonId, slot])
+}
+
+model Type {
+  name    String        @id
+  pokemon PokemonType[]
+}

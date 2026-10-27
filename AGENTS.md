@@ -18,7 +18,10 @@ This project exists for me to learn frontend development by writing the code mys
 
 If a task seems to need a write, describe the change and let me make it. This rule stays in force until I remove it from this file.
 
-**One exception:** agents own the data pipeline in `~/dev/learning_projects/get_pokemon_api` (fetching PokéAPI and producing the SQLite file) and may write freely there. The rule above still covers this repo: I copy the generated database in myself.
+**Exceptions:**
+
+1. Agents own the data pipeline in `~/dev/learning_projects/get_pokemon_api` (fetching PokéAPI and producing the SQLite file) and may write freely there.
+2. Agents own the database setup in this repo: `prisma/` (the copied `pokedex.db` and `schema.prisma`), `prisma.config.ts`, `lib/db.ts`, the Prisma packages, and the related `.gitignore` / `pnpm-workspace.yaml` entries. Everything that reads data for the UI (data functions, Route Handlers, pages, components) stays mine to write.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

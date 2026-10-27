@@ -42,3 +42,6 @@ next-env.d.ts
 
 # other files
 scratch/
+
+# prisma client (rebuilt by `prisma generate` on install)
+/generated/
